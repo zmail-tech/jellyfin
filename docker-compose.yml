@@ -12,8 +12,6 @@ services:
       - VIRTUAL_HOST=${VIRTUAL_HOST} #added for nginx
       - LETSENCRYPT_HOST=${VIRTUAL_HOST} #added for LE automation
       - VIRTUAL_PORT=8096
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - ./config:/config
       - ./tvshows:/data/tvshows
