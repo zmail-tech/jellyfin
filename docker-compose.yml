@@ -1,0 +1,29 @@
+---
+version: "2.1"
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - JELLYFIN_PublishedServerUrl=${VIRTUAL_HOST} #optional
+      - VIRTUAL_HOST=${VIRTUAL_HOST} #added for nginx
+      - LETSENCRYPT_HOST=${VIRTUAL_HOST} #added for LE automation
+      - VIRTUAL_PORT=8096
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    volumes:
+      - ./config:/config
+      - ./tvshows:/data/tvshows
+      - ./movies:/data/movies
+    ports:
+      - 8096:8096
+      - 8920:8920 #optional
+    restart: unless-stopped
+#Section below to put it on the same network as nginx
+networks:
+  default:
+    external:
+      name: nginx-proxy
